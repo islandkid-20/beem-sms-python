@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "beem-sms-python"
+dynamic = ["version"]
+description = "Professional Python SDK for Beem SMS API"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+keywords = ["sms", "beem", "tanzania", "messaging", "api", "sdk"]
+authors = [
+    {name = "James Mashaka", email = "j1997ames@gmail.com"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Communications",
+]
+dependencies = [
+    "requests>=2.28.0",
+    "urllib3>=1.26.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=22.0",
+    "flake8>=5.0",
+    "mypy>=1.0",
+    "pre-commit>=2.20",
+]
+
+[project.urls]
+Homepage = "https://github.com/islandkid-20/beem-sms-python"
+Repository = "https://github.com/islandkid-20/beem-sms-python"
+
+[project.scripts]
+beem-sms = "beem_sms.cli:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "beem_sms.__version__"}
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
