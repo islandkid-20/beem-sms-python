@@ -21,7 +21,7 @@ What you expected to happen.
 **Environment:**
 - OS: [e.g. Ubuntu 20.04]
 - Python version: [e.g. 3.9]
-- Package version: [e.g. 1.0.0]
+- Package version: [e.g. 1.0.1]
 
 **Additional context**
 Add any other context about the problem here.
