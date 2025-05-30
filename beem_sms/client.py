@@ -36,7 +36,6 @@ class SMSRecipient:
 
     def __post_init__(self):
         if not self.recipient_id:
-            # Generate a simple ID based on phone number hash
             self.recipient_id = abs(hash(self.dest_addr)) % 10000
 
 
@@ -51,22 +50,11 @@ class SMSResponse:
 
 
 class BeemSMSClient:
-    """
-    Professional Beem SMS client with comprehensive features
-    
-    Features:
-    - Input validation
-    - Proper error handling
-    - Logging
-    - Retry logic
-    - Rate limiting
-    - Type hints
-    - Structured responses
-    """
+    """Professional Beem SMS client"""
     
     DEFAULT_BASE_URL = "https://apisms.beem.africa/v1/send"
-    MAX_MESSAGE_LENGTH = 160  # SMS limit for plain text
-    MAX_UNICODE_LENGTH = 70   # SMS limit for Unicode
+    MAX_MESSAGE_LENGTH = 160
+    MAX_UNICODE_LENGTH = 70
     DEFAULT_TIMEOUT = 30
     MAX_RETRIES = 3
     
@@ -79,17 +67,6 @@ class BeemSMSClient:
         max_retries: int = MAX_RETRIES,
         logger: Optional[logging.Logger] = None
     ):
-        """
-        Initialize Beem SMS client
-        
-        Args:
-            api_key: Your Beem API key
-            secret_key: Your Beem secret key
-            base_url: API base URL (optional)
-            timeout: Request timeout in seconds
-            max_retries: Maximum number of retry attempts
-            logger: Custom logger instance
-        """
         if not api_key or not secret_key:
             raise AuthenticationError("API key and secret key are required")
         
@@ -98,10 +75,7 @@ class BeemSMSClient:
         self.base_url = base_url or self.DEFAULT_BASE_URL
         self.timeout = timeout
         
-        # Setup logging
         self.logger = logger or self._setup_logger()
-        
-        # Setup requests session with retry strategy
         self.session = self._setup_session(max_retries)
         
         self.logger.info("Beem SMS client initialized")
@@ -123,7 +97,6 @@ class BeemSMSClient:
         """Setup requests session with retry strategy"""
         session = requests.Session()
         
-        # Configure retry strategy
         retry_strategy = Retry(
             total=max_retries,
             backoff_factor=1,
@@ -192,7 +165,6 @@ class BeemSMSClient:
         except ValueError:
             response_data = {}
         
-        # Extract request ID if available
         request_id = response_data.get('request_id') or response.headers.get('X-Request-ID')
         
         if response.status_code == 200:
@@ -230,40 +202,20 @@ class BeemSMSClient:
         message: str,
         encoding: SMSEncoding = SMSEncoding.PLAIN_TEXT
     ) -> SMSResponse:
-        """
-        Send SMS to one or more recipients
-        
-        Args:
-            source_addr: Sender ID or phone number
-            dest_addr: Recipient phone number(s)
-            message: SMS message content
-            encoding: Message encoding type
-            
-        Returns:
-            SMSResponse object with operation results
-            
-        Raises:
-            ValidationError: Invalid input parameters
-            AuthenticationError: Authentication failed
-            APIError: API request failed
-            NetworkError: Network connection failed
-        """
+        """Send SMS to one or more recipients"""
         start_time = time.time()
         
-        # Normalize recipients to list
         if isinstance(dest_addr, str):
             recipients = [SMSRecipient(dest_addr)]
         else:
             recipients = [SMSRecipient(addr) for addr in dest_addr]
         
-        # Validate inputs
         self._validate_message(message, encoding)
         self._validate_recipients(recipients)
         
         if not source_addr:
             raise ValidationError("Source address is required")
         
-        # Prepare request
         payload = self._prepare_payload(source_addr, message, recipients, encoding)
         auth = HTTPBasicAuth(self.api_key, self.secret_key)
         
@@ -282,7 +234,6 @@ class BeemSMSClient:
             
             result = self._handle_response(response)
             
-            # Log performance metrics
             duration = time.time() - start_time
             self.logger.info(f"SMS operation completed in {duration:.2f}s")
             
@@ -309,19 +260,7 @@ class BeemSMSClient:
         encoding: SMSEncoding = SMSEncoding.PLAIN_TEXT,
         batch_size: int = 100
     ) -> List[SMSResponse]:
-        """
-        Send SMS to multiple recipients in batches
-        
-        Args:
-            source_addr: Sender ID or phone number
-            recipients: List of recipient phone numbers
-            message: SMS message content
-            encoding: Message encoding type
-            batch_size: Number of recipients per batch
-            
-        Returns:
-            List of SMSResponse objects for each batch
-        """
+        """Send SMS to multiple recipients in batches"""
         if batch_size <= 0:
             raise ValidationError("Batch size must be positive")
         
@@ -343,13 +282,11 @@ class BeemSMSClient:
                 result = self.send_sms(source_addr, batch, message, encoding)
                 results.append(result)
                 
-                # Small delay between batches to respect rate limits
                 if i + batch_size < len(recipients):
                     time.sleep(0.1)
                     
             except Exception as e:
                 self.logger.error(f"Batch {batch_num} failed: {str(e)}")
-                # Create error response for failed batch
                 error_response = SMSResponse(
                     success=False,
                     status_code=0,
@@ -364,12 +301,11 @@ class BeemSMSClient:
         return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """Context manager exit - cleanup resources"""
+        """Context manager exit"""
         if hasattr(self, 'session'):
             self.session.close()
 
 
-# Convenience function for simple use cases
 def send_sms(
     api_key: str,
     secret_key: str,
@@ -378,19 +314,6 @@ def send_sms(
     message: str,
     **kwargs
 ) -> SMSResponse:
-    """
-    Convenience function to send SMS without creating a client instance
-    
-    Args:
-        api_key: Your Beem API key
-        secret_key: Your Beem secret key
-        source_addr: Sender ID or phone number
-        dest_addr: Recipient phone number(s)
-        message: SMS message content
-        **kwargs: Additional arguments passed to BeemSMSClient
-        
-    Returns:
-        SMSResponse object with operation results
-    """
+    """Convenience function to send SMS without creating a client instance"""
     with BeemSMSClient(api_key, secret_key, **kwargs) as client:
         return client.send_sms(source_addr, dest_addr, message)

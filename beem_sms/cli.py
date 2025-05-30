@@ -17,7 +17,6 @@ def load_config(config_path: Optional[str] = None) -> dict:
     if config_path:
         config_file = Path(config_path)
     else:
-        # Look for config in common locations
         possible_paths = [
             Path.home() / ".beem_sms.json",
             Path.cwd() / "beem_sms.json",
@@ -49,7 +48,6 @@ def send_command(args):
     
     try:
         if args.file:
-            # Read recipients from file
             with open(args.file, 'r') as f:
                 recipients = [line.strip() for line in f if line.strip()]
         else:
@@ -124,7 +122,6 @@ def main():
     
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
     
-    # Send SMS command
     send_parser = subparsers.add_parser("send", help="Send SMS")
     send_parser.add_argument("--api-key", help="Beem API key")
     send_parser.add_argument("--secret-key", help="Beem secret key") 
@@ -152,7 +149,6 @@ def main():
     )
     send_parser.set_defaults(func=send_command)
     
-    # Validate phone numbers command
     validate_parser = subparsers.add_parser("validate", help="Validate phone numbers")
     validate_parser.add_argument(
         "--numbers", "-n", nargs="+",

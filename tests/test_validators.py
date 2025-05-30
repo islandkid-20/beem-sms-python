@@ -20,9 +20,9 @@ class TestPhoneNumberValidator:
         ("(255) 712 345 678", True),
         ("", False),
         ("123", False),
-        ("+255512345678", False),  # Invalid network code
-        ("712345678", True),  # Will be cleaned to +255712345678
-        ("+1234567890123456", False),  # Too long
+        ("+255512345678", False),
+        ("712345678", True),
+        ("+1234567890123456", False),
     ])
     def test_validate(self, phone_number, expected):
         """Test phone number validation"""

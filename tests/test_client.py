@@ -70,7 +70,6 @@ class TestBeemSMSClient:
     @patch('beem_sms.client.requests.Session.post')
     def test_send_sms_success(self, mock_post, client):
         """Test successful SMS sending"""
-        # Mock successful response
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"request_id": "test_123"}
@@ -92,7 +91,6 @@ class TestBeemSMSClient:
     @patch('beem_sms.client.requests.Session.post')
     def test_send_sms_authentication_error(self, mock_post, client):
         """Test SMS sending with authentication error"""
-        # Mock 401 response
         mock_response = Mock()
         mock_response.status_code = 401
         mock_response.json.return_value = {}
@@ -110,7 +108,6 @@ class TestBeemSMSClient:
     @patch('beem_sms.client.requests.Session.post')
     def test_send_sms_rate_limit(self, mock_post, client):
         """Test SMS sending with rate limit error"""
-        # Mock 429 response
         mock_response = Mock()
         mock_response.status_code = 429
         mock_response.json.return_value = {}
@@ -140,7 +137,6 @@ class TestBeemSMSClient:
     @patch('beem_sms.client.requests.Session.post')
     def test_send_bulk_sms(self, mock_post, client):
         """Test bulk SMS sending"""
-        # Mock successful response
         mock_response = Mock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"request_id": "bulk_123"}
@@ -148,7 +144,7 @@ class TestBeemSMSClient:
         mock_response.headers = {}
         mock_post.return_value = mock_response
         
-        recipients = ["+255742892731", "+255783346386", "+255713521250"]
+        recipients = ["+255742892731", "+255783346386", "+255783346387"]
         
         results = client.send_bulk_sms(
             source_addr="TestApp",
@@ -157,7 +153,6 @@ class TestBeemSMSClient:
             batch_size=2
         )
         
-        # Should create 2 batches (2 + 1)
         assert len(results) == 2
         assert all(result.success for result in results)
     
