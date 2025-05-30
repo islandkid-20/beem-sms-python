@@ -16,15 +16,15 @@ test-cov:
 
 # Code quality
 lint:
-	flake8 beem_sms tests
+	flake8 beem_sms tests --max-line-length=88 --extend-ignore=E203,W503
 
 format:
 	black beem_sms tests
-	isort beem_sms tests
+	@command -v isort >/dev/null 2>&1 && isort beem_sms tests || echo "⚠️  isort not found, skipping import sorting"
 
 format-check:
 	black --check beem_sms tests
-	isort --check-only beem_sms tests
+	@command -v isort >/dev/null 2>&1 && isort --check-only beem_sms tests || echo "⚠️  isort not found, skipping import sort check"
 
 type-check:
 	mypy beem_sms

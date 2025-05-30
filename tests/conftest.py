@@ -2,8 +2,9 @@
 Pytest configuration and fixtures
 """
 
-import pytest
 from unittest.mock import Mock
+
+import pytest
 
 
 @pytest.fixture
@@ -21,4 +22,4 @@ def mock_response():
 @pytest.fixture
 def sample_recipients():
     """Sample phone numbers for testing"""
-    return ["+255742892731", "+255783346386", "+255713521250"]
+    return ["+255712345678", "+255687654321", "+255798765432"]
