@@ -4,9 +4,9 @@ Beem SMS Python SDK
 A professional Python package for sending SMS via Beem API.
 """
 
-__version__ = "1.0.0"
-__author__ = "Your Name"
-__email__ = "your.email@example.com"
+__version__ = "1.0.1"
+__author__ = "James Mashaka"
+__email__ = "j1997ames@gmail.com"
 
 from .client import BeemSMSClient, SMSEncoding, SMSRecipient, SMSResponse, send_sms
 from .exceptions import (
