@@ -1,18 +1,26 @@
 from setuptools import setup, find_packages
+import os
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-with open("requirements.txt", "r", encoding="utf-8") as fh:
+# Handle requirements.txt if it exists
+requirements = []
+if os.path.exists("requirements.txt"):
+    with open("requirements.txt", "r", encoding="utf-8") as fh:
+        requirements = [line.strip() for line in fh if line.strip() and not line.startswith("#")]
+else:
+    # Fallback to hardcoded requirements
     requirements = [
-        line.strip() for line in fh if line.strip() and not line.startswith("#")
+        "requests>=2.28.0",
+        "urllib3>=1.26.0",
     ]
 
 setup(
     name="beem-sms-python",
     version="1.0.0",
-    author="James Mashaka",
-    author_email="j1997ames@gmail.com",
+    author="Your Name",
+    author_email="your.email@example.com",
     description="Professional Python SDK for Beem SMS API",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -21,7 +29,6 @@ setup(
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
@@ -38,14 +45,16 @@ setup(
             "pytest>=7.0",
             "pytest-cov>=4.0",
             "black>=22.0",
+            "isort>=5.12.0",
             "flake8>=5.0",
             "mypy>=1.0",
+            "types-requests>=2.28.0",
             "pre-commit>=2.20",
         ],
         "docs": [
             "sphinx>=5.0",
             "sphinx-rtd-theme>=1.0",
-        ],
+        ]
     },
     entry_points={
         "console_scripts": [

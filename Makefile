@@ -52,8 +52,8 @@ clean:
 	rm -rf build/
 	rm -rf dist/
 	rm -rf *.egg-info/
-	find . -type d -name __pycache__ -delete
-	find . -type f -name "*.pyc" -delete
+	find . -name "*.pyc" -delete
+	find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
 
 build: clean
 	python -m build
