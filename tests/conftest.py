@@ -2,8 +2,9 @@
 Pytest configuration and fixtures
 """
 
-import pytest
 from unittest.mock import Mock
+
+import pytest
 
 
 @pytest.fixture
