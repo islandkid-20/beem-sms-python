@@ -16,7 +16,7 @@ test-cov:
 
 # Code quality
 lint:
-	flake8 beem_sms tests
+	flake8 beem_sms tests --max-line-length=88 --extend-ignore=E203,W503
 
 format:
 	black beem_sms tests

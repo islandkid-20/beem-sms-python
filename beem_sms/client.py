@@ -13,8 +13,12 @@ from requests.adapters import HTTPAdapter
 from requests.auth import HTTPBasicAuth
 from urllib3.util.retry import Retry
 
-from .exceptions import (APIError, AuthenticationError, NetworkError, SMSError,
-                         ValidationError)
+from .exceptions import (
+    APIError,
+    AuthenticationError,
+    NetworkError,
+    ValidationError,
+)
 from .validators import PhoneNumberValidator
 
 

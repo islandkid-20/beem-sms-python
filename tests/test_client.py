@@ -2,15 +2,26 @@
 Unit tests for BeemSMSClient
 """
 
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 import requests
-from requests.auth import HTTPBasicAuth
 
-from beem_sms import (APIError, AuthenticationError, BeemSMSClient,
-                      NetworkError, SMSEncoding, SMSRecipient, SMSResponse,
-                      ValidationError)
+from beem_sms import (
+    APIError,
+    AuthenticationError,
+    BeemSMSClient,
+    NetworkError,
+    SMSEncoding,
+    SMSRecipient,
+    ValidationError,
+)
+
+# Use test credentials for unit tests
+TEST_API_KEY = "test_api_key"
+TEST_SECRET_KEY = "test_secret_key"
+TEST_SOURCE_ADDR = "TestApp"
+TEST_PHONE = "+255712345678"
 
 
 class TestBeemSMSClient:
@@ -19,13 +30,13 @@ class TestBeemSMSClient:
     @pytest.fixture
     def client(self):
         """Create test client instance"""
-        return BeemSMSClient(api_key="test_api_key", secret_key="test_secret_key")
+        return BeemSMSClient(api_key=TEST_API_KEY, secret_key=TEST_SECRET_KEY)
 
     def test_client_initialization(self):
         """Test client initialization with valid credentials"""
-        client = BeemSMSClient("api_key", "secret_key")
-        assert client.api_key == "api_key"
-        assert client.secret_key == "secret_key"
+        client = BeemSMSClient(TEST_API_KEY, TEST_SECRET_KEY)
+        assert client.api_key == TEST_API_KEY
+        assert client.secret_key == TEST_SECRET_KEY
         assert client.base_url == BeemSMSClient.DEFAULT_BASE_URL
 
     def test_client_initialization_invalid_credentials(self):
@@ -69,7 +80,7 @@ class TestBeemSMSClient:
         mock_post.return_value = mock_response
 
         response = client.send_sms(
-            source_addr="TestApp", dest_addr="+255742892731", message="Test message"
+            source_addr=TEST_SOURCE_ADDR, dest_addr=TEST_PHONE, message="Test message"
         )
 
         assert response.success is True
@@ -89,7 +100,9 @@ class TestBeemSMSClient:
 
         with pytest.raises(AuthenticationError):
             client.send_sms(
-                source_addr="TestApp", dest_addr="+255742892731", message="Test message"
+                source_addr=TEST_SOURCE_ADDR,
+                dest_addr=TEST_PHONE,
+                message="Test message",
             )
 
     @patch("beem_sms.client.requests.Session.post")
@@ -104,7 +117,9 @@ class TestBeemSMSClient:
 
         with pytest.raises(APIError, match="Rate limit exceeded"):
             client.send_sms(
-                source_addr="TestApp", dest_addr="+255742892731", message="Test message"
+                source_addr=TEST_SOURCE_ADDR,
+                dest_addr=TEST_PHONE,
+                message="Test message",
             )
 
     @patch("beem_sms.client.requests.Session.post")
@@ -114,7 +129,9 @@ class TestBeemSMSClient:
 
         with pytest.raises(NetworkError, match="Request timeout"):
             client.send_sms(
-                source_addr="TestApp", dest_addr="+255742892731", message="Test message"
+                source_addr=TEST_SOURCE_ADDR,
+                dest_addr=TEST_PHONE,
+                message="Test message",
             )
 
     @patch("beem_sms.client.requests.Session.post")
@@ -127,10 +144,10 @@ class TestBeemSMSClient:
         mock_response.headers = {}
         mock_post.return_value = mock_response
 
-        recipients = ["+255742892731", "+255783346386", "+255783346387"]
+        recipients = ["+255712345678", "+255687654321", "+255798765432"]
 
         results = client.send_bulk_sms(
-            source_addr="TestApp",
+            source_addr=TEST_SOURCE_ADDR,
             recipients=recipients,
             message="Bulk test message",
             batch_size=2,

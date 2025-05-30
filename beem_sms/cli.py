@@ -6,7 +6,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
 
 from .client import BeemSMSClient, SMSEncoding
 from .exceptions import SMSError
@@ -22,7 +22,11 @@ def load_config(config_path: Optional[str] = None) -> dict:
             Path.cwd() / "beem_sms.json",
             Path.cwd() / ".beem_sms.json",
         ]
-        config_file = next((p for p in possible_paths if p.exists()), None)
+        config_file = None
+        for path in possible_paths:
+            if path.exists():
+                config_file = path
+                break
 
     if config_file and config_file.exists():
         with open(config_file, "r") as f:
@@ -78,7 +82,7 @@ def send_command(args):
             )
 
             if response.success:
-                print(f"✓ SMS sent successfully! Request ID: {response.request_id}")
+                print(f"✓ SMS sent successfully! " f"Request ID: {response.request_id}")
             else:
                 print(f"✗ Failed to send SMS: {response.message}")
                 sys.exit(1)
@@ -124,7 +128,9 @@ def main():
         "--recipients", "-r", nargs="+", help="Recipient phone numbers"
     )
     send_parser.add_argument(
-        "--file", "-f", help="File containing recipient phone numbers (one per line)"
+        "--file",
+        "-f",
+        help="File containing recipient phone numbers (one per line)",
     )
     send_parser.add_argument(
         "--unicode", "-u", action="store_true", help="Use Unicode encoding"
@@ -145,7 +151,9 @@ def main():
         "--numbers", "-n", nargs="+", help="Phone numbers to validate"
     )
     validate_parser.add_argument(
-        "--file", "-f", help="File containing phone numbers to validate (one per line)"
+        "--file",
+        "-f",
+        help="File containing phone numbers to validate (one per line)",
     )
     validate_parser.set_defaults(func=validate_command)
 
