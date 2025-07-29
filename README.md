@@ -4,16 +4,16 @@ A professional Python SDK for sending SMS via the Beem SMS API. This package pro
 
 ## Features
 
-- 🚀 **Easy to use** - Simple, intuitive API
-- 🛡️ **Robust error handling** - Comprehensive exception handling and validation
-- 📱 **Phone number validation** - Built-in phone number validation and formatting
-- 🔄 **Retry logic** - Automatic retry on failures with exponential backoff
-- 📊 **Logging support** - Detailed logging for debugging and monitoring
-- 🎯 **Type hints** - Full type hint support for better IDE experience
-- 🔐 **Security** - Secure credential handling
-- 📦 **Bulk SMS** - Efficient bulk SMS sending with batching
-- 🧪 **Well tested** - Comprehensive test suite
-- 📖 **CLI tool** - Command-line interface for quick operations
+- **Easy to use** - Simple, intuitive API
+- **Robust error handling** - Comprehensive exception handling and validation
+- **Phone number validation** - Built-in phone number validation and formatting
+- **Retry logic** - Automatic retry on failures with exponential backoff
+- **Logging support** - Detailed logging for debugging and monitoring
+- **Type hints** - Full type hint support for better IDE experience
+- **Security** - Secure credential handling
+- **Bulk SMS** - Efficient bulk SMS sending with batching
+- **Well tested** - Comprehensive test suite
+- **CLI tool** - Command-line interface for quick operations
 
 ## Installation
 
@@ -297,11 +297,19 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- 📧 Email: j1997ames@gmail.com
-- 🐛 Issues: [GitHub Issues](https://github.com/islandkid-20/beem-sms-python/issues)
-- 📖 Documentation: [Read the Docs](https://beem-sms-python.readthedocs.io/)
+- Email: j1997ames@gmail.com
+- Issues: [GitHub Issues](https://github.com/islandkid-20/beem-sms-python/issues)
+- Documentation: [Read the Docs](https://beem-sms-python.readthedocs.io/)
 
 ## Changelog
+
+
+### v1.0.2
+
+* Adjusted message length limits to support multi-part SMS:
+
+  * Increased `MAX_MESSAGE_LENGTH` from `160` to `153 * 3`
+  * Increased `MAX_UNICODE_LENGTH` from `70` to `67 * 3`
 
 ### v1.0.1
 

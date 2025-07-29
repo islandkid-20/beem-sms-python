@@ -18,7 +18,7 @@ else:
 
 setup(
     name="beem-sms-python",
-    version="1.0.1",
+    version="1.0.2",
     author="James Mashaka",
     author_email="j1997ames@gmail.com",
     description="Professional Python SDK for Beem SMS API",
