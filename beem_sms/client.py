@@ -56,8 +56,8 @@ class BeemSMSClient:
     """Professional Beem SMS client"""
 
     DEFAULT_BASE_URL = "https://apisms.beem.africa/v1/send"
-    MAX_MESSAGE_LENGTH = 160
-    MAX_UNICODE_LENGTH = 70
+    MAX_MESSAGE_LENGTH = 153 * 3
+    MAX_UNICODE_LENGTH = 67 * 3
     DEFAULT_TIMEOUT = 30
     MAX_RETRIES = 3
 
