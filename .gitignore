@@ -70,3 +70,6 @@ docs/build/
 .mypy_cache/
 .dmypy.json
 dmypy.json.env
+
+
+CLAUDE.md
