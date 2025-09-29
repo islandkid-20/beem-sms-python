@@ -303,11 +303,19 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Changelog
 
+### v1.0.3
+
+* Added Read the Docs documentation support:
+  * Created `.readthedocs.yml` configuration file
+  * Set up Sphinx documentation with MyST parser
+  * Added documentation dependencies (sphinx, sphinx-rtd-theme, myst-parser)
+  * Documentation now auto-syncs with README.md content
+  * Added support for PDF and EPUB formats
+  * Documentation available at: https://beem-sms-python.readthedocs.io/
 
 ### v1.0.2
 
 * Adjusted message length limits to support multi-part SMS:
-
   * Increased `MAX_MESSAGE_LENGTH` from `160` to `153 * 3`
   * Increased `MAX_UNICODE_LENGTH` from `70` to `67 * 3`
 
